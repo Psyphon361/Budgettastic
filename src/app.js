@@ -1,4 +1,4 @@
-require('dotenv').config()
+require("dotenv").config();
 require("./db/mongoose");
 const path = require("path");
 const express = require("express");
@@ -26,7 +26,7 @@ app.use(
     })
 );
 
-const port = process.env.PORT; 
+const port = process.env.PORT;
 
 // Define paths for express config
 const publicDirectoryPath = path.join(__dirname, "../public");
@@ -42,5 +42,5 @@ app.use(express.static(publicDirectoryPath));
 app.use(userRouter);
 
 app.listen(port, function () {
-    console.log("Server started on port 3000!");
+    console.log("Server started on port " + port);
 });
