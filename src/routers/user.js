@@ -103,6 +103,8 @@ router.post(
 
         if (shared_data.valid_file_type === false) {
             res.redirect("/add-invoice");
+        } else if (req.user.fname === "*_*") {
+            res.redirect("/register");
         } else {
             const user = req.user;
             const invoice = new Invoice();
