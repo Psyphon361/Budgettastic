@@ -83,12 +83,9 @@ router.get("/", async (req, res) => {
     });
 });
 
-router.get("/add-invoice", auth, (req, res) => {
+router.get("/add-invoice", (req, res) => {
     if (!shared_data.user_is_authenticated) {
         res.redirect("/signin");
-    } else if (req.user.fname === "*_*") {
-        // ALREADY REGISTERED USERS NOT ALLOWED TO ACCESS /register
-        res.redirect("/register");
     } else {
         res.render("add-invoice", {
             title: "Budgettastic | Add Invoice",
