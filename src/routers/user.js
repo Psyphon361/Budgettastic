@@ -83,9 +83,12 @@ router.get("/", async (req, res) => {
     });
 });
 
-router.get("/add-invoice", (req, res) => {
+router.get("/add-invoice", auth, (req, res) => {
     if (!shared_data.user_is_authenticated) {
         res.redirect("/signin");
+    } else if (user.fname === "*_*") {
+        // ALREADY REGISTERED USERS NOT ALLOWED TO ACCESS /register
+        res.redirect("/register");
     } else {
         res.render("add-invoice", {
             title: "Budgettastic | Add Invoice",
@@ -105,8 +108,6 @@ router.post(
             res.redirect("/add-invoice");
         } else {
             const user = req.user;
-            // console.log(user);
-            // console.log(req.body);
             const invoice = new Invoice();
 
             invoice.category = req.body.category;
@@ -132,11 +133,6 @@ router.post(
             }
 
             const expenses = user[invoice.category];
-            // console.log(expenses);
-
-            console.log(invoice);
-
-            // console.log();
 
             ocr(
                 invoice.invoice_image,
@@ -147,13 +143,10 @@ router.post(
                     if (error) {
                         console.log(error);
                     } else {
-                        console.log(data);
                         user[invoice.category] = data.new_expense;
                         invoice.cost = data.total;
 
                         shared_data.invoice_details = data;
-
-                        // console.log(shared_data.invoice_details);
 
                         res.redirect("/summary");
 
@@ -279,7 +272,6 @@ router.get("/history", auth, async (req, res) => {
     const user = req.user;
 
     const invoices = await Invoice.find({ customer_id: user._id });
-    console.log(invoices);
 
     res.render("history", {
         title: "Budgettastic | History",
@@ -305,7 +297,6 @@ router.get("/register", auth, async (req, res) => {
 
 router.post("/register", auth, async (req, res) => {
     const requestedUpdates = Object.keys(req.body);
-    console.log(req.body);
     const allowedUpdates = [
         "fname",
         "lname",
