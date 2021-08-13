@@ -5,11 +5,6 @@
     2. An active internet connection.
 
 ## To run the project locally, follow these steps:
-    1. Setup a virtual environment:
-        1.	pip install virtualenv
-        2.	python -m venv <path for creating virtualenv>
-        3.	To activate: <virtualenv path>\Scripts\activate
-
     1. Clone the repository: git clone https://github.com/Psyphon361/Budgettastic
     2. Change the directory: cd Budgettastic
     3. Initialise npm in the project directory: npm init -y
