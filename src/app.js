@@ -41,6 +41,10 @@ app.use(express.static(publicDirectoryPath));
 
 app.use(userRouter);
 
+app.get("/*", (req, res) => {
+    res.render("404");
+});
+
 app.listen(port, function () {
     console.log("Server started on port " + port);
 });
