@@ -13,3 +13,7 @@
     6. Place the Client IDs and Secrets in a .env file in the root of the project.
     8. Run the server using: npm run dev
     9. Open this link in browser: http://127.0.0.1:3000/
+   
+## Budgettastic API:
+    This Node app makes uses the Budgettastic API for doing OCR and getting the analysis/feedback.
+    Repository: https://github.com/Pirate2606/budgettastic-api
