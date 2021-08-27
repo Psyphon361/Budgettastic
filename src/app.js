@@ -1,4 +1,4 @@
-require("dotenv").config();
+// require("dotenv").config();  // PLEASE UNCOMMENT THIS IF YOU ARE RUNNING IT LOCALLY
 require("./db/mongoose");
 const path = require("path");
 const express = require("express");
