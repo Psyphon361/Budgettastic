@@ -9,8 +9,9 @@
     2. Change the directory: cd Budgettastic
     3. Initialise npm in the project directory: npm init -y
     4. Install the node modules: npm i
-    5. Generate OAuth Client ID and Secret for Google and Github.
+    5. Generate OAuth Client ID and Secret for Google and Github and Fusion Auth Token.
     6. Place the Client IDs and Secrets in a .env file in the root of the project.
+    7. Change the base URL of google.js and github.js OAuth files to https://budgettastic.herokuapp.com/{google/github}/callback
     8. Run the server using: npm run dev
     9. Open this link in browser: http://127.0.0.1:3000/
    
