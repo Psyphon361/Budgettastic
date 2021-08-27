@@ -73,11 +73,11 @@ const userSchema = new mongoose.Schema(
             required: true,
         },
 
-        // profile_pic: {
-        //     type: String,
-        //     required: true,
-        //     default: "profile_pic",
-        // },
+        balance: {
+            type: Number,
+            default: 10,
+            required: true,
+        },
 
         food: {
             type: Number,

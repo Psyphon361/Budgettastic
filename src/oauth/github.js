@@ -7,7 +7,7 @@ passport.use(
         {
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: "https://budgettastic.herokuapp.com/github/callback",
+            callbackURL: "http://localhost:3000/github/callback",
             scope: ["user:email"],
         },
         async function (accessToken, refreshToken, profile, cb) {

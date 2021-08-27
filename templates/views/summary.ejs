@@ -111,6 +111,28 @@
                                     <% } %>
                                 </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12 col-12 ml-md-0 ml-5">
+                                    <h4>Bank Account Related Remarks</h4>
+                                    <% if (shared_data.bank_balance < 10000 && shared_data.invoice_details.more_than_average) { %>
+                                        <p>WARNING! You are currently spending more than the average expenditure. Also you are running low on your saving. Your current bank balance is ₹<%= shared_data.bank_balance %>. Control your expenses to avoid going into debt.</p>
+                                    <% } else if (shared_data.bank_balance >= 10000 && shared_data.bank_balance < 50000 && shared_data.invoice_details.more_than_average) {%>
+                                        <p>Oops! Your expenditure is above the average expenditure calculated using a dataset of 40,000+ families. However, you have a decent account balance of ₹<%= shared_data.bank_balance %>. Control your further expenses and you can manage the expenses this month.</p>
+                                    <% } else if (shared_data.bank_balance >= 50000 && shared_data.invoice_details.more_than_average) { %>
+                                        <p>Oops! Your expenditure is above the average expenditure calculated using a dataset of 40,000+ families. However, you have a high account balance of ₹<%= shared_data.bank_balance %>. You can manage your expenses from your savings!.</p>
+                                    <% } else { %>
+                                        <p>Hurray! You are doing great in managing your monthly expenditure. Your current account balance is ₹<%= shared_data.bank_balance %>. Your expenses are below the average expenditure of 40,000+ families. Keep it up! :)</p>
+                                    <% } %>
+                                </div>
+                                <!-- <div class="col-md-6 col-12 ml-md-0 ml-5">
+                                    <% if (shared_data.invoice_details.more_than_average) { %>
+                                        <p>You have exceeded your monthy budget for this category :/ Try to cut on some expenses in some other categories to balance things out ;D.</p>
+                                    <% } else {%>
+                                        <p>Congratulations! You are in control of your expenditure (at least for now :D) Keep going strong and control your expenses for the rest of the month.</p>
+                                    <% } %>
+                                </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>

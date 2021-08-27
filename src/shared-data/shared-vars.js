@@ -4,7 +4,8 @@ var shared_data = {
     valid_user: true,
     valid_file_type: true,
     strong_password: true,
-    invoice_details: {}
+    invoice_details: {},
+    bank_balance: 0
 };
 
 module.exports = shared_data;

@@ -2,6 +2,7 @@ const { unlink } = require("fs"); // to delete the img after uploading to cloud.
 require("../oauth/google");
 require("../oauth/github");
 const path = require("path");
+const fetch = require("node-fetch");
 const express = require("express");
 const router = new express.Router();
 const User = require("../models/user");
@@ -12,6 +13,7 @@ const multer = require("multer");
 const imgbbUploader = require("imgbb-uploader");
 const jwt = require("jsonwebtoken");
 const ocr = require("../utils/budgettastic-api");
+const get_account_holder_id = require("../utils/account_holder_id");
 
 const shared_data = require("../shared-data/shared-vars");
 
@@ -324,6 +326,83 @@ router.post("/register", auth, async (req, res) => {
     } catch (e) {
         res.status(400).send(e);
     }
+});
+
+router.get("/add-account", async (req, res) => {
+    if (!shared_data.user_is_authenticated) {
+        res.redirect("/signin");
+    } else {
+        res.render("add-account", {
+            title: "Budgettastic | Add Account",
+            shared_data,
+        });
+    }
+});
+
+router.post("/add-account", auth, async (req, res) => {
+    let result;
+    const user = req.user;
+
+    var async_account_details = new Promise((resolve, reject) => {
+        get_account_holder_id(req.body.accountid, (error, data) => {
+            if (error) {
+                console.log(error);
+            } else {
+                result = data.body;
+                resolve();
+            }
+        });
+    });
+
+    async_account_details.then(async () => {
+        let raw_body = {
+            disableCardFFCreation: false,
+            disableFFCreation: false,
+            disablePhoneFFCreation: false,
+            accountHolderID: result.vectors[0].accountHolderID,
+            name: result.firstName,
+            phoneNumber: result.vectors[0].value,
+            requestID: result.requestID,
+        };
+
+        let url =
+            "https://fusion.preprod.zeta.in/api/v1/ifi/140793/bundles/ec637de1-6567-4f40-bef6-51ed534357cf/issueBundle";
+        let options = {
+            method: "POST",
+            headers: {
+                "X-Zeta-AuthToken": process.env.FUSION_AUTH_TOKEN,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(raw_body),
+        };
+
+        const data = await fetch(url, options);
+        const json_data = await data.json();
+        const account_id = json_data.accounts[0].accountID;
+
+        url =
+            "https://fusion.preprod.zeta.in/api/v1/ifi/140793/accounts/" +
+            account_id +
+            "/balance";
+
+        options = {
+            method: "GET",
+            headers: {
+                "X-Zeta-AuthToken": process.env.FUSION_AUTH_TOKEN,
+                "Content-Type": "application/json",
+            },
+        };
+
+        const account_details = await fetch(url, options);
+        const account_json_data = await account_details.json();
+        const bank_balance = account_json_data.balance;
+
+        user["balance"] = bank_balance;
+        shared_data.bank_balance = bank_balance;
+        await user.save();
+        
+        res.redirect("/");
+    });
 });
 
 // GOOGLE OAUTH
